@@ -60,8 +60,17 @@ public class MyLinkedList<T> {
         length = 0;
     }
 
-    private void addFirst(T element) {
-        if(length==0) {
+    public int getLength() {
+        return length;
+    }
+
+    /**
+     * Insert first element
+     *
+     * @param element element to insert
+     */
+    public void addFirst(T element) {
+        if (length == 0) {
             firstNode = lastNode = new Node(lastNode, null, element);
         } else {
             firstNode = new Node(null, firstNode, element);
@@ -69,7 +78,12 @@ public class MyLinkedList<T> {
         length++;
     }
 
-    public void add(T element) {
+    /**
+     * Add last element to list
+     *
+     * @param element element to add
+     */
+    public void addLast(T element) {
         if (length == 0) {
             addFirst(element);
         } else {
@@ -79,6 +93,12 @@ public class MyLinkedList<T> {
         }
     }
 
+    /**
+     * Add element to position
+     *
+     * @param element element to add
+     * @param pos position of element
+     */
     public void add(T element, int pos) {
         if (pos < 0 || pos > length) {
             throw new IllegalArgumentException("pos may be in [0,length] range");
@@ -86,33 +106,46 @@ public class MyLinkedList<T> {
         if (pos == 0) {
             addFirst(element);
         } else if (pos == length) {
-            add(element);
+            addLast(element);
         } else {
             Node current;
             if (!closerFromLeft(pos)) {
                 current = lastNode;
-                for (int i = 0; i < length - pos - 1; i++) {
+                for (int i = 0; i < length - pos; i++) {
                     current = current.getPrevious();
                 }
-                
+
             } else {
                 current = firstNode;
-                for (int i = 0; i < pos; i++) {
+                for (int i = 0; i < pos - 1; i++) {
                     current = current.getNext();
                 }
-                
+
             }
             Node tempNode = new Node(current, current.getNext(), element);
             current.setNext(tempNode);
+            tempNode.getNext().setPrevious(tempNode);
+
             length++;
         }
     }
 
+    /**
+     * Check direction to move in list by closest distance to current position
+     *
+     * @param pos position
+     * @return true - direction left->right, false - right->left
+     */
     private boolean closerFromLeft(int pos) {
         return (pos < length - pos);
     }
 
-
+    /**
+     * Get element on position
+     *
+     * @param pos position of element
+     * @return element
+     */
     public T get(int pos) {
         if (pos < 0 || pos >= length) {
             throw new IllegalArgumentException("pos may be in [0,length) range");
@@ -120,7 +153,7 @@ public class MyLinkedList<T> {
         Node current;
         if (!closerFromLeft(pos)) {
             current = lastNode;
-            for (int i = 0; i < length - pos; i++) {
+            for (int i = 0; i < length - pos - 1; i++) {
                 current = current.getPrevious();
             }
         } else {
@@ -130,6 +163,55 @@ public class MyLinkedList<T> {
             }
         }
         return current.getElement();
+    }
+
+    /**
+     * Delete first element
+     */
+    private void deleteFirst() {
+        firstNode.element = null;
+        firstNode = firstNode.getNext();
+        length--;
+    }
+
+    /**
+     * Delete last element
+     */
+    private void deleteLast() {
+        lastNode.element = null;
+        lastNode = lastNode.getPrevious();
+        length--;
+    }
+
+    /**
+     * Delete element on position
+     *
+     * @param pos position
+     */
+    public void delete(int pos) {
+        if (pos < 0 || pos >= length) {
+            throw new IllegalArgumentException("pos may be in [0,length) range");
+        }
+        if (pos == 0) {
+            deleteFirst();
+        } else if (pos == length - 1) {
+            deleteLast();
+        } else {
+            Node current;
+            if (!closerFromLeft(pos)) {
+                current = lastNode;
+                for (int i = 0; i < length - pos - 1; i++) {
+                    current = current.getPrevious();
+                }
+            } else {
+                current = firstNode;
+                for (int i = 0; i < pos; i++) {
+                    current = current.getNext();
+                }
+            }
+            current.getPrevious().setNext(current.getNext());
+            length--;
+        }
     }
 
     @Override
