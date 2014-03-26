@@ -33,7 +33,7 @@ public class Main {
             for (int i = 1; i <= 10; i++) {
                 MultiThreadSinSum runnable = new RunnableSinSum(leftBorded, rigthBorder, i);
                 runnable.calculate();
-              /*  System.out.println("Callable [" + leftBorded + "," + rigthBorder + "] "
+                /*System.out.println("Callable [" + leftBorded + "," + rigthBorder + "] "
                         + "result: " + runnable.calculate()
                         + " threads: " + i + " time: "
                         + runnable.getTimeOfCalculation());*/
