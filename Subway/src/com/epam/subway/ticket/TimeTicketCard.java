@@ -24,6 +24,11 @@ public class TimeTicketCard extends Ticket {
         return time;
     }
 
+    public void setType(TicketType type) {
+        this.type = type;
+    }
+
+    
     @Override
     public boolean check(Calendar currentDate, double price) {
         long current = currentDate.getTimeInMillis();

@@ -4,6 +4,7 @@
  */
 package com.epam.subway.ticket;
 
+import com.epam.subway.ticket.builder.AccumulativeTicketBuilder;
 import com.epam.subway.turnstile.Turnstile;
 import java.util.GregorianCalendar;
 import static org.junit.Assert.*;
@@ -47,7 +48,41 @@ public class AccumulativeTicketCardTest {
         boolean expected = true;
         boolean actual = test.check(new GregorianCalendar(), subway.getPrice());
 
+        assertEquals(expected, actual);
+    }
+    
+    @Test
+    public void IncreaseBalanceFor10CreatedWithBuilder() {
+        AccumulativeTicketBuilder atb = new AccumulativeTicketBuilder();
+        AccumulativeTicketCard test = (AccumulativeTicketCard)atb.setBalance(100).build();
+        double expected = 110;
         
+        test.increaseBalance(10);
+        double actual = test.getBalance();
+        
+        assertEquals(expected, actual, 0.01);
+    }
+    @Test
+    public void CheckForIncorrectBalanceCreatedWithBuilder() {
+       AccumulativeTicketBuilder atb = new AccumulativeTicketBuilder();
+        AccumulativeTicketCard test = (AccumulativeTicketCard)atb.setBalance(2).build();
+        Turnstile subway = mock(Turnstile.class);
+        when(subway.getPrice()).thenReturn(2.5);
+        boolean expected = false;
+        boolean actual = test.check(new GregorianCalendar(), subway.getPrice());
+
+        
+        assertEquals(expected, actual);
+    }
+    @Test
+    public void CheckForCorrectBalanceCreatedWithBuilder() {
+        AccumulativeTicketBuilder atb = new AccumulativeTicketBuilder();
+        AccumulativeTicketCard test = (AccumulativeTicketCard)atb.setBalance(20).build();
+        Turnstile subway = mock(Turnstile.class);
+        when(subway.getPrice()).thenReturn(2.5);
+        boolean expected = true;
+        boolean actual = test.check(new GregorianCalendar(), subway.getPrice());
+
         assertEquals(expected, actual);
     }
 }

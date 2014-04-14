@@ -18,6 +18,11 @@ public class TripsTicketCard extends Ticket {
         numberOfTrips = trips.getNumberOfTrips();
     }
 
+    public void setType(TicketType type) {
+        this.type = type;
+    }
+
+    
     @Override
     public boolean check(Calendar currentDate, double price) {
         if (numberOfTrips > 0) {
