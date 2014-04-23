@@ -13,7 +13,7 @@ http://www.springframework.org/schema/jdbc http://www.springframework.org/schema
     <context:component-scan base-package="ua.epam.springproject.repository"/>
     
     <jdbc:embedded-database id="dataSource" type="HSQL">
-        <!--<jdbc:script location="classpath:schema.sql"/>-->
+        <jdbc:script location="classpath:motor_depot.sql"/>
         <!--<jdbc:script location="classpath:test-data.sql"/>-->
     </jdbc:embedded-database>
     

@@ -69,4 +69,42 @@ public class Auto {
                 + owner + ", ok=" + ok + '}';
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (int) (Double.doubleToLongBits(this.MAX_WEIGHT) ^ (Double.doubleToLongBits(this.MAX_WEIGHT) >>> 32));
+        hash = 97 * hash + this.id;
+        hash = 97 * hash + (this.owner != null ? this.owner.hashCode() : 0);
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.ok ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Auto other = (Auto) obj;
+        if (Double.doubleToLongBits(this.MAX_WEIGHT) != Double.doubleToLongBits(other.MAX_WEIGHT)) {
+            return false;
+        }
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.owner != other.owner && (this.owner == null || !this.owner.equals(other.owner))) {
+            return false;
+        }
+        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
+            return false;
+        }
+        if (this.ok != other.ok) {
+            return false;
+        }
+        return true;
+    }
+
 }

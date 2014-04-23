@@ -108,5 +108,51 @@ public class User {
                 + password + ", role=" + role + ", fullName=" + fullName 
                 + ", contactNumber=" + contactNumber + ", auto=" + auto + '}';
     }
-   
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + (this.login != null ? this.login.hashCode() : 0);
+        hash = 37 * hash + this.id;
+        hash = 37 * hash + (this.password != null ? this.password.hashCode() : 0);
+        hash = 37 * hash + (this.role != null ? this.role.hashCode() : 0);
+        hash = 37 * hash + (this.fullName != null ? this.fullName.hashCode() : 0);
+        hash = 37 * hash + (this.contactNumber != null ? this.contactNumber.hashCode() : 0);
+        hash = 37 * hash + (this.auto != null ? this.auto.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final User other = (User) obj;
+        if ((this.login == null) ? (other.login != null) : !this.login.equals(other.login)) {
+            return false;
+        }
+        if (this.id != other.id) {
+            return false;
+        }
+        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+            return false;
+        }
+        if (this.role != other.role && (this.role == null || !this.role.equals(other.role))) {
+            return false;
+        }
+        if ((this.fullName == null) ? (other.fullName != null) : !this.fullName.equals(other.fullName)) {
+            return false;
+        }
+        if ((this.contactNumber == null) ? (other.contactNumber != null) : !this.contactNumber.equals(other.contactNumber)) {
+            return false;
+        }
+        if (this.auto != other.auto && (this.auto == null || !this.auto.equals(other.auto))) {
+            return false;
+        }
+        return true;
+    }
+    
 }

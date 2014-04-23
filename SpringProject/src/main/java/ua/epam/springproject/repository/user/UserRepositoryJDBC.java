@@ -44,7 +44,7 @@ public class UserRepositoryJDBC implements UserDAO{
         
         try {
             connection = ds.getConnection();
-            preparedStatement = connection.prepareStatement("select * from user");
+            preparedStatement = connection.prepareStatement("select * from users");
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 users.add(map(resultSet));
@@ -73,11 +73,52 @@ public class UserRepositoryJDBC implements UserDAO{
     }
 
     public Role getRole(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        Role role = new Role();
+        
+        try {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement("select * from role where role_id = " + id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                role.setId(resultSet.getInt("role_id"));
+                role.setName(resultSet.getString("role_name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(connection);
+        }
+
+        return role;
     }
 
     public User getUser(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        User user = null;
+        
+        try {
+            connection = ds.getConnection();
+            preparedStatement = connection.prepareStatement("select * from users where user_id=" + id);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                user =  map(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(resultSet);
+            close(preparedStatement);
+            close(connection);
+        }
+
+        return user;
     }
 
     public void updateAuto(Auto auto) {

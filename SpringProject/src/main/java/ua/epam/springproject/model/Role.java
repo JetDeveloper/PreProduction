@@ -14,6 +14,9 @@ public class Role {
     private int id;
     private String name;
 
+    public Role() {
+    }
+
     public Role(int id, String name) {
         this.id = id;
         this.name = name;
@@ -39,5 +42,29 @@ public class Role {
     public String toString() {
         return "Role{" + "id=" + id + ", name=" + name + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + this.id;
+        hash = 83 * hash + (this.name != null ? this.name.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Role other = (Role) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
+    
     
 }
