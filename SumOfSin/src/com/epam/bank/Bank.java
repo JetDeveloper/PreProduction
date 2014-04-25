@@ -43,8 +43,8 @@ public class Bank {
             if (to.getLock().tryLock(13, TimeUnit.MILLISECONDS)) {
                 from.withdraw(amount);
                 to.deposit(amount);
-                from.getLock().unlock();
                 to.getLock().unlock();
+                from.getLock().unlock();       
            }
       }
     }
