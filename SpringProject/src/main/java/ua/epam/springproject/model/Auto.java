@@ -18,6 +18,12 @@ public class Auto {
     private User owner;
     private String name;
     private boolean ok;
+
+    public Auto(double MAX_WEIGHT) {
+        this.MAX_WEIGHT = MAX_WEIGHT;
+    }
+
+     
     public Auto(int id, String name, User owner, double MAX_WEIGHT, boolean ok) {
         this.MAX_WEIGHT = MAX_WEIGHT;
         this.id = id;
