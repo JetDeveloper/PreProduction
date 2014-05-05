@@ -14,6 +14,10 @@ public class OrderStatus {
     private int id;
     private String statusName;
 
+    public OrderStatus() {
+    }
+
+    
     public OrderStatus(int id, String statusName) {
         this.id = id;
         this.statusName = statusName;

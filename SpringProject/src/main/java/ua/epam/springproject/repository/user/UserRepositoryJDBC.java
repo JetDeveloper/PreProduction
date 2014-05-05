@@ -36,6 +36,9 @@ public class UserRepositoryJDBC implements UserDAO {
     public static final String AUTO_CAR_NAME = "car_name";
     public static final String AUTO_TRUCKER_ID = "trucker_id";
     public static final String AUTO_IS_OK = "isOK";
+    public static final String ROLE_ID = "role_id";
+    public static final String ROLE_NAME = "role_name";
+    
     @Autowired
     private DataSource ds;
 
@@ -138,8 +141,8 @@ public class UserRepositoryJDBC implements UserDAO {
             preparedStatement = connection.prepareStatement(GET_ROLE_BY_ID + id);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                role.setId(resultSet.getInt("role_id"));
-                role.setName(resultSet.getString("role_name"));
+                role.setId(resultSet.getInt(ROLE_ID));
+                role.setName(resultSet.getString(ROLE_NAME));
             }
         } catch (SQLException e) {
             e.printStackTrace();
