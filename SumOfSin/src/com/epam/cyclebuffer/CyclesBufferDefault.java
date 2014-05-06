@@ -25,7 +25,7 @@ public class CyclesBufferDefault<T> implements CyclesBuffer<T> {
 
     @Override
     public synchronized void push(T value) {
-        if (size >= buffer.length) {
+        while (size >= buffer.length) {
             try {
                 System.out.println("Buffer is full. Waiting for pop");
                 wait();
@@ -44,7 +44,7 @@ public class CyclesBufferDefault<T> implements CyclesBuffer<T> {
 
     @Override
     public synchronized T pop() {
-        if(size==0) {
+        while(size==0) {
             try {
                 System.out.println("Buffer is empty. Waiting for push");
                 wait();

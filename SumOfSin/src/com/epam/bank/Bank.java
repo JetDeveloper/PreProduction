@@ -15,37 +15,43 @@ import java.util.concurrent.TimeUnit;
  */
 public class Bank {
 
-   private List<Account> acounts;
+    private List<Account> acounts;
 
     public Bank() {
         this.acounts = new LinkedList<>();
-        for(int i=0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             acounts.add(new Account(new Random().nextInt(10000)));
         }
     }
 
     public int calculateSum() {
         int delta = 0;
-         for(Account a : acounts) {
-             delta += a.getBalance();
-         }
-         return  delta;
+        for (Account a : acounts) {
+            delta += a.getBalance();
+        }
+        return delta;
     }
 
     public List<Account> getAcounts() {
         return acounts;
     }
-    
+
     public void transfer(Account from, Account to, int amount) throws InterruptedException {
 
         // different time to awoid life-lock
-       if (from.getLock().tryLock(10, TimeUnit.MILLISECONDS)) {
-            if (to.getLock().tryLock(13, TimeUnit.MILLISECONDS)) {
-                from.withdraw(amount);
-                to.deposit(amount);
-                to.getLock().unlock();
-                from.getLock().unlock();       
-           }
-      }
+        if (from.getLock().tryLock(5, TimeUnit.MILLISECONDS)) {
+            try {
+                if (to.getLock().tryLock(13, TimeUnit.MILLISECONDS)) {
+                    try {
+                        from.withdraw(amount);
+                        to.deposit(amount);
+                    } finally {
+                        to.getLock().unlock();
+                    }
+                }
+            } finally {
+                from.getLock().unlock();
+            }
+        }
     }
 }

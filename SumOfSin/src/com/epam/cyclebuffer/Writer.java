@@ -30,7 +30,7 @@ public class Writer<T> implements Runnable{
              buffer.push(t);
              System.out.println("Writer thread " + id + " pushs " + t.toString());
             try {
-                Thread.sleep(50); // give some time for readers
+                Thread.sleep(500); // give some time for readers
             } catch (InterruptedException ex) {
                 Logger.getLogger(Writer.class.getName()).log(Level.SEVERE, null, ex);
             }

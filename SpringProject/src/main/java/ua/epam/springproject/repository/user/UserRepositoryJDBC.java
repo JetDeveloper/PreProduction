@@ -27,7 +27,7 @@ public class UserRepositoryJDBC implements UserDAO {
 
     public static final String GET_ALL_USERS = "select * from users";
     public static final String GET_ALL_USERS_WITH_ROLE = "select * from users where user_role_id=";
-    public static final String GET_ROLE_BY_ID = "select * from role where role_id = ";
+    public static final String GET_ROLE_BY_ID = "select role_id, role_name from role where role_id =";
     public static final String GET_USER_BY_ID = "select * from users where user_id=";
     public static final String GET_ALL_USER_AUTOS = "select car_id,car_name, max_weight, isOK from car where trucker_id = ";
     

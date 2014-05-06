@@ -4,7 +4,9 @@
  */
 package com.epam.cyclebuffer;
 
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,25 +21,25 @@ public class CyclesBufferConcurrent<T> implements CyclesBuffer<T> {
     private int head;
     private int tail;
     private int size;
-    private ReentrantReadWriteLock rwl;
-    Lock read;
-    Lock write;
+    private ReentrantLock lock;
+    private Condition readCondition;
+    private Condition writeCondition;
 
     public CyclesBufferConcurrent(int lenght) {
         buffer = (T[]) new Object[lenght];
         head = tail = size = 0;
-        rwl = new ReentrantReadWriteLock();
-        read = rwl.readLock();
-        write = rwl.writeLock();
+        lock = new ReentrantLock();
+        readCondition = lock.newCondition();
+        writeCondition = lock.newCondition();
     }
 
     @Override
     public void push(T value) {
-        write.lock();
         try {
-            if (size >= buffer.length) {
+             lock.lock();
+            while (size >= buffer.length) {
                 System.out.println("Buffer is full. Waiting for pop");
-                return;
+                writeCondition.await();
             }
             if (head != (tail - 1)) {
                 buffer[head++] = value;
@@ -45,33 +47,41 @@ public class CyclesBufferConcurrent<T> implements CyclesBuffer<T> {
                 System.out.println("Buffer size is " + size + " pushed el " + value.toString());
             }
             head = head % buffer.length;
+            readCondition.signalAll();
+          
+        } catch (InterruptedException ex) {
+            Logger.getLogger(CyclesBufferConcurrent.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            write.unlock();
+             lock.unlock();
         }
     }
 
     @Override
-    public T pop() {
-        read.lock();
+    public  T pop() {
+        T element = null;
+         lock.lock();
         try {
-            if (size == 0) {
+            while (size == 0) {
                 System.out.println("Buffer is empty. Waiting for push");
-                return null;
+                readCondition.await();
             }
-            T t = null;
+
             int adjTail = tail > head ? tail - buffer.length : tail;
             if (adjTail < head) {
-                t = (T) buffer[tail];
+                element = (T) buffer[tail];
                 buffer[tail] = null;
                 tail++;
                 size--;
                 tail = tail % buffer.length;
-                System.out.println("Buffer size is " + size + " poped el " + t.toString());
-
+                System.out.println("Buffer size is " + size + " poped el " + element.toString());
+                  
             }
-            return t;
+            writeCondition.signalAll(); 
+        } catch (InterruptedException ex) {
+            Logger.getLogger(CyclesBufferConcurrent.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            read.unlock();
+            lock.unlock();
+            return element;
         }
     }
 }
