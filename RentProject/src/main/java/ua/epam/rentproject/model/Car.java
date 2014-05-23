@@ -1,90 +1,107 @@
 package ua.epam.rentproject.model;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /**
  * @author Dmytro_Svynarenko
  * @version 1.0
  * @created 05-���-2014 15:25:46
  */
-public class Car {
+@Entity
+@Table(name = "Car")
+@NamedQueries({
+    @NamedQuery(name = "Car.getAll", query = "SELECT c from Car c"),
+    @NamedQuery(name = "Car.getAllOK", query = "SELECT c from Car c WHERE c.ok = true"),
+    @NamedQuery(name = "Car.getCarById", query = "SELECT c from Car c WHERE c.carId = :id")
+})
+public class Car implements Serializable {
 
-	private String carDescription;
-	private int carId;
-	private String carModel;
-	private float carPrice;
-	private boolean ok;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int carId;
+    @Column(name = "carDescription")
+    private String carDescription;
+    @Column(name = "carModel")
+    private String carModel;
+    @Column(name = "carPrice")
+    private float carPrice;
+    @Column(name = "isOk")
+    private Boolean ok;
+    @OneToMany(mappedBy = "car")
+    private Set<Deal> deals = new HashSet<>();
 
-	/**
-	 * 
-	 * @param model
-	 * @param price
-	 */
-	public Car(String model, float price){
-            this.carModel = model;
-            this.carPrice = price;
-        }
+    public Car(String model, float price) {
+        this.carModel = model;
+        this.carPrice = price;
+        this.ok = Boolean.TRUE;
+    }
 
-	public Car(){
+    public Car() {
+    }
 
-	}
+    public String getCarDescription() {
+        return carDescription;
+    }
 
-	public String getcarDescription(){
-		return carDescription;
-	}
+    public int getCarId() {
+        return carId;
+    }
 
-	public int getcarId(){
-		return carId;
-	}
+    public String getCarModel() {
+        return carModel;
+    }
 
-	public String getcarModel(){
-		return carModel;
-	}
+    public float getCarPrice() {
+        return carPrice;
+    }
 
-	public float getcarPrice(){
-		return carPrice;
-	}
+    public boolean isOk() {
+        return ok;
+    }
 
-	public boolean isOK(){
-		return ok;
-	}
+    public void setCarDescription(String newVal) {
+        carDescription = newVal;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcarDescription(String newVal){
-		carDescription = newVal;
-	}
+    public void setCarId(int newVal) {
+        carId = newVal;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcarId(int newVal){
-		carId = newVal;
-	}
+    public void setCarModel(String newVal) {
+        carModel = newVal;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcarModel(String newVal){
-		carModel = newVal;
-	}
+    public void setCarPrice(float newVal) {
+        carPrice = newVal;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setcarPrice(float newVal){
-		carPrice = newVal;
-	}
+    public void setOk(Boolean ok) {
+        this.ok = ok;
+    }
 
-	/**
-	 * 
-	 * @param newVal
-	 */
-	public void setOK(boolean newVal){
-		ok = newVal;
-	}
+    public Set<Deal> getDeals() {
+        return deals;
+    }
 
+    public void setDeals(Set<Deal> deals) {
+        this.deals = deals;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" + "carId=" + carId + ", carDescription=" + carDescription + ", carModel=" + carModel + ", carPrice=" + carPrice + ", ok=" + ok + '}';
+    }
+
+    
 }

@@ -12,31 +12,31 @@ import ua.epam.rentproject.model.RentDetails;
  */
 public interface DealDAO {
 
-    public Deal getAllDeals();
+    public List<Deal> getAllDeals();
 
+    public Deal getDealById(int id);
+
+    public Integer insertDeal(Deal deal);
+
+    public void updateDeal(Deal deal);
+
+    public void deleteDeal(Deal deal);
+    
     public List<Penalty> getAllPenalties();
 
     public List<RentDetails> getAllRentDetails();
-
-    public Deal getDealById(int id);
 
     public Penalty getPenaltylById(int id);
 
     public RentDetails getRentDetailById(int id);
 
-    public int insertDeal(Deal deal);
-
-    public void updateDeal(Deal deal);
-
-    public void deleteDeal(Deal deal);
-
-    public int insertPenalty(Penalty penalty);
+    public Integer insertPenalty(Penalty penalty);
 
     public void updatePenalty(Penalty penalty);
 
     public void deletePenalty(Penalty penalty);
 
-    public int insertRentDetail(RentDetails rentDetails);
+    public Integer insertRentDetail(RentDetails rentDetails);
 
     public void updateRentDetail(RentDetails rentDetails);
 

@@ -13,8 +13,10 @@ public interface CarDAO {
     public List<Car> getAllCars();
 
     public Car getCarById(int id);
+    
+    public List<Car> getAllOKCars();
 
-    public int insertCar(Car car);
+    public Integer insertCar(Car car);
 
     public void updateCar(Car car);
 

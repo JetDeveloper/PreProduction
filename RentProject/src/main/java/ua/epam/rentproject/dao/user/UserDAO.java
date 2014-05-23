@@ -14,7 +14,7 @@ public interface UserDAO {
 
     public User getUserById(int id);
 
-    public int insertUser(User user);
+    public Integer insertUser(User user);
 
     public void udpateUser(User user);
 
